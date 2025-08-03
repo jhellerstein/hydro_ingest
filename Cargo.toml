@@ -14,6 +14,10 @@ hydro_lang = { git = "https://github.com/hydro-project/hydro.git", branch = "mai
 hydro_std = { git = "https://github.com/hydro-project/hydro.git", branch = "main" }
 stageleft = "0.9.4"
 regex = "1.0"
+syn = { version = "2.0", features = ["full", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+prettyplease = "0.2"
 
 [build-dependencies]
 stageleft_tool = "0.9.4"
@@ -28,6 +32,7 @@ hydro_lang = { git = "https://github.com/hydro-project/hydro.git", branch = "mai
 tokio = { version = "1.29.0", features = ["full"] }
 tokio-stream = { version = "0.1.3", default-features = false }
 futures = "0.3.0"
+tempfile = "3.0"
 
 [lints.clippy]
 uninlined_format_args = "allow"
