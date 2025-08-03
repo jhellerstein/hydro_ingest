@@ -4,30 +4,19 @@ publish = false
 version = "0.0.0"
 edition = "2024"
 
-# Default binary to run
-[[bin]]
-name = "basic_migration"
-path = "src/bin/basic_migration.rs"
-
 [dependencies]
 hydro_lang = { git = "https://github.com/hydro-project/hydro.git", branch = "main" }
 hydro_std = { git = "https://github.com/hydro-project/hydro.git", branch = "main" }
 stageleft = "0.9.4"
-regex = "1.0"
 
 [build-dependencies]
 stageleft_tool = "0.9.4"
 
+# Dev dependencies will be added when needed for generated tests
 [dev-dependencies]
-ctor = "0.2"
 hydro_deploy = { git = "https://github.com/hydro-project/hydro.git", branch = "main" }
-hydro_lang = { git = "https://github.com/hydro-project/hydro.git", branch = "main", features = [
-    "deploy",
-    "viz",
-] }
+hydro_lang = { git = "https://github.com/hydro-project/hydro.git", branch = "main", features = ["deploy"] }
 tokio = { version = "1.29.0", features = ["full"] }
-tokio-stream = { version = "0.1.3", default-features = false }
-futures = "0.3.0"
 
 [lints.clippy]
 uninlined_format_args = "allow"

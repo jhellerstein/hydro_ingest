@@ -1,11 +1,6 @@
 stageleft::stageleft_no_entry_crate!();
 
-pub mod first_ten;
-pub mod first_ten_cluster;
-pub mod first_ten_distributed;
-pub mod legacy_hello_world;
-pub mod transformer;
-pub mod legacy;
+// Generated modules will be injected here
 
 #[cfg(test)]
 mod test_init {
@@ -14,3 +9,6 @@ mod test_init {
         hydro_lang::deploy::init_test();
     }
 }
+pub mod hello_world;
+pub mod hello_world_test;
+pub mod counter_test;

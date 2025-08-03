@@ -1,29 +1,61 @@
-## Getting Started
-This is a template for a Rust project that uses [Hydro](https://github.com/hydro-project/hydro) for distributed services. To generate a project, run
+# Hydro Ingest Project
 
-```bash
-cargo install cargo-generate
-cargo generate gh:hydro-project/hydro-template
-cd <myproject>
-```
-
-After `cd`ing into the workspace, run the sample tests
-
-Then test the project:
-```bash
-cargo test
-```
-
-To learn more about the template, see the [Hydro Quickstart](https://hydro.run/docs/hydro/quickstart/first-dataflow).
+This project transforms legacy Rust programs into Hydro dataflow programs.
 
 ## Project Structure
-The template includes a sample program `first_ten_distributed`.
 
-`first_ten_distributed` demonstrates how to use Hydro to create dataflow programs for a distributed system, and can be launched by running `cargo run --example first_ten_distributed`. Note the use of `--example` here because `src/bin/first_ten_distributed.rs` contains the binary that will be launched for each process, whereas `examples/first_ten_distributed.rs` contains a deployment script for connecting the processes together.
+```
+hydro_ingest/
+├── generator/              # Generator tool (outside template)
+│   ├── src/main.rs        # Transformation logic
+│   ├── legacy_programs/   # Sample legacy programs to transform
+│   └── Cargo.toml         # Generator dependencies
+└── template/              # Clean Hydro template project
+    ├── src/lib.rs         # Template library
+    ├── examples/          # Generated examples go here
+    ├── Cargo.toml         # Hydro dependencies
+    └── build.rs           # Stageleft build script
+```
 
-This template also comes with an example of deploying the `first_ten_distributed` flow to Google Cloud. To deploy, you will need to install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and [Terraform](https://developer.hashicorp.com/terraform/install). Then, authenticate with Google Cloud and launch the deployment script with your project ID as an argument:
+## Usage
+
+### 1. Generate Hydro programs from legacy code
+
+From the generator directory:
 
 ```bash
-$ gcloud auth application-default login
-$ cargo run --example first_ten_distributed_gcp -- YOUR_PROJECT_ID_HERE
+cd generator
+cargo run -- legacy_programs/hello_world.rs hello_world_hydro
 ```
+
+This will:
+- Read the legacy program `hello_world.rs`
+- Generate a Hydro function `hello_world_hydro` 
+- Write files to `../template/src/hello_world_hydro.rs` and `../template/examples/hello_world_hydro.rs`
+- Update `../template/src/lib.rs` to include the new module
+
+### 2. Run the generated Hydro program
+
+From the template directory:
+
+```bash
+cd ../template
+cargo run --example hello_world_hydro
+```
+
+## Transformation Process
+
+The generator:
+1. **Extracts** the main function body from legacy Rust code
+2. **Wraps** it in a Hydro `map` operator within a dataflow
+3. **Generates** both a module and runnable example
+4. **Adds** a 10-second timeout for automatic termination
+
+The resulting Hydro program has identical observable behavior to the original legacy program.
+
+## Examples
+
+- `hello_world.rs` → Simple println transformation
+- `counter.rs` → For loop transformation
+
+Both legacy and Hydro versions produce the same output, demonstrating successful ingestion into the Hydro dataflow model.
